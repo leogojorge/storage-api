@@ -28,7 +28,7 @@ namespace StorageApi.Controllers.Models
         {
             var erros = new List<string>();
 
-            if (this.Picture == null || this.Picture.Length > 0)
+            if (this.Picture == null || this.Picture.Length == 0)
             {
                 erros.Add("Picture is empty");
 
@@ -48,6 +48,13 @@ namespace StorageApi.Controllers.Models
             }
 
             return erros;
+        }
+
+        public async Task<byte[]> GetPictureAsByteArray()
+        {
+            using var ms = new MemoryStream();
+            await this.Picture.CopyToAsync(ms);
+            return ms.ToArray();
         }
     }
 }

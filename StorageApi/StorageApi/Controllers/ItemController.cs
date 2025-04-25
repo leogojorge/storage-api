@@ -29,6 +29,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPost(Name = "AddItem")]
+    [Consumes("multipart/form-data")]
     public async Task<IActionResult> Post([FromForm] AddItemRequest request)
     {
         var validationErros = request.Validate();
@@ -36,14 +37,12 @@ public class ItemController : ControllerBase
         if (validationErros.Count > 0)
             return BadRequest(validationErros);
 
-        using var ms = new MemoryStream();
-        await request.Picture.CopyToAsync(ms);
-        var imageData = ms.ToArray();
+        var pictureContent = await request.GetPictureAsByteArray();
 
-        var item = new Item(request.Name, imageData, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
+        var item = new Item(request.Name, pictureContent, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
 
         await this.ItemRepository.Save(item);
 
-        return Ok("Image Updated Successfully.");
+        return Ok("Item created successfully.");
     }
 }

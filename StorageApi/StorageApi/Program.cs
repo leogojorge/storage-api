@@ -26,6 +26,14 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseStaticFiles();
+
+        app.MapGet("/", async context => //map the first page to be opened on index.html 
+        {
+            context.Response.ContentType = "text/html";
+            await context.Response.SendFileAsync("wwwroot/index.html");
+        });
+
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
