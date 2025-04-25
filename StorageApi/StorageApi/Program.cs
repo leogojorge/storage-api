@@ -1,3 +1,7 @@
+using MongoDB.Driver;
+using MongoDB.Driver.Core.Configuration;
+using StorageApi.Infrastructure.Repository;
+
 namespace StorageApi;
 
 public class Program
@@ -10,6 +14,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        RegisterMongo(builder);
 
         var app = builder.Build();
 
@@ -24,9 +30,28 @@ public class Program
 
         app.UseAuthorization();
 
-
         app.MapControllers();
 
         app.Run();
     }
+
+    private static void RegisterMongo(WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IMongoClient>(sp =>
+        {
+            var connectionString = builder.Configuration.GetSection("MongoSettings").GetValue<string>("ConnectionString");
+            
+            return new MongoClient(connectionString);
+        });
+
+        builder.Services.AddSingleton<IMongoDatabase>(sp =>
+        {
+            var client = sp.GetRequiredService<IMongoClient>();
+            return client.GetDatabase("StorageApi");
+        });
+
+        // Register the repository
+        builder.Services.AddScoped<IItemRepository, ItemRepository>();
+    }
+
 }
