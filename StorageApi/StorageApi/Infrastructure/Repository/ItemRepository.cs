@@ -31,18 +31,19 @@ namespace StorageApi.Infrastructure.Repository
             {
                 return null;
             }
-            
+
             var result = await this._collection.FindAsync(item => item.Id == objectId);
             return result.FirstOrDefault();
         }
 
-        public async Task<List<Item>> GetByNameOrDescription(string value)
+        public async Task<List<Item>> GetByNameOrDescription(string value, int pageNumber = 1, int size = 10)
         {
             var filter = Builders<Item>.Filter.Text(value);
 
-            var results = await this._collection.FindAsync(filter);
+            var results = await this._collection.Find(filter)
+                .Skip((pageNumber - 1) * size).Limit(size).ToListAsync();
 
-            return results.ToList();
+            return results;
         }
 
         public async Task Save(Item item)
@@ -57,9 +58,8 @@ namespace StorageApi.Infrastructure.Repository
 
         Task<Item> GetById(string id);
 
-        Task<List<Item>> GetByNameOrDescription(string value);
+        Task<List<Item>> GetByNameOrDescription(string value, int pageNumber = 0, int size = 0);
 
         Task<List<Item>> GetAll();
     }
-
 }

@@ -1,4 +1,4 @@
-﻿namespace StorageApi.Controllers.Models
+﻿namespace StorageApi.Controllers.Models.Request
 {
     public class GetItemByFilterRequest : PaginatedRequest
     {

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using StorageApi.Controllers.Models;
+using StorageApi.Controllers.Models.Request;
 using StorageApi.Domain;
 using StorageApi.Infrastructure.Repository;
 
@@ -33,7 +33,10 @@ public class ItemController : ControllerBase
     [HttpGet(Name = "GetAllItems")]
     public async Task<IActionResult> Get([FromQuery] GetItemByFilterRequest request)
     {
-        var items = await this.ItemRepository.GetByNameOrDescription(request.NameAndDescription);
+        var items = await this.ItemRepository.GetByNameOrDescription(
+            request.NameAndDescription,
+            request.PageNumber,
+            request.PageSize);
         
         return Ok(items);
     }
