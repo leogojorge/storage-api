@@ -1,8 +1,13 @@
-﻿namespace StorageApi.Domain
+﻿using System.Security.Cryptography;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace StorageApi.Domain
 {
     public class Item
     {
-        public int Id { get; set; }
+        [BsonId]
+        public ObjectId Id { get; set; }
 
         public string Name { get; set; }
 
@@ -22,6 +27,7 @@
 
         public Item(string name, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
         {
+            Id = ObjectId.GenerateNewId();
             Name = name;
             Picture = picture;
             PartNumber = partNumber;
