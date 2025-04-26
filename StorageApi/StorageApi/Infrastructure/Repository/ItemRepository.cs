@@ -36,14 +36,18 @@ namespace StorageApi.Infrastructure.Repository
             return result.FirstOrDefault();
         }
 
-        public async Task<List<Item>> GetByNameOrDescription(string value, int pageNumber = 1, int size = 10)
+        public async Task<PaginatedItemQueryResult> GetByNameOrDescription(string value, int pageNumber = 1, int pageSize = 10)
         {
             var filter = Builders<Item>.Filter.Text(value);
 
-            var results = await this._collection.Find(filter)
-                .Skip((pageNumber - 1) * size).Limit(size).ToListAsync();
+            long itemCount = this._collection.CountDocuments(filter);
 
-            return results;
+            var items = await this._collection.Find(filter)
+                .Skip((pageNumber - 1) * pageSize).Limit(pageSize).ToListAsync();
+
+            var paginatedResult = new PaginatedItemQueryResult(items, pageNumber, pageSize, itemCount);
+
+            return paginatedResult;
         }
 
         public async Task Save(Item item)
@@ -58,8 +62,12 @@ namespace StorageApi.Infrastructure.Repository
 
         Task<Item> GetById(string id);
 
-        Task<List<Item>> GetByNameOrDescription(string value, int pageNumber = 0, int size = 0);
+        Task<PaginatedItemQueryResult> GetByNameOrDescription(string value, int pageNumber = 0, int size = 0);
 
         Task<List<Item>> GetAll();
+    }
+
+    public record PaginatedItemQueryResult(List<Item> Items, int pageNumber, int PageSize, long ItemCount)
+    {
     }
 }
