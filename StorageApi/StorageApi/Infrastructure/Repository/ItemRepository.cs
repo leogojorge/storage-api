@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using StorageApi.Domain;
 
 namespace StorageApi.Infrastructure.Repository
@@ -9,13 +10,39 @@ namespace StorageApi.Infrastructure.Repository
 
         public ItemRepository(IMongoDatabase database)
         {
-            this._collection = database.GetCollection<Item>("Item");
+            this._collection = database.GetCollection<Item>(nameof(Item));
         }
 
-        public async Task<Item> GetById(int id)
+        public async Task<List<Item>> GetAll()
         {
-            var result = await this._collection.FindAsync(item => item.Id == id);
+            var result = await this._collection.FindAsync(_ => true);
+
+            return result.ToList();
+        }
+
+        public async Task<Item> GetById(string id)
+        {
+            ObjectId objectId;
+            try
+            {
+                objectId = new ObjectId(id);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
+            var result = await this._collection.FindAsync(item => item.Id == objectId);
             return result.FirstOrDefault();
+        }
+
+        public async Task<List<Item>> GetByNameOrDescription(string value)
+        {
+            var filter = Builders<Item>.Filter.Text(value);
+
+            var results = await this._collection.FindAsync(filter);
+
+            return results.ToList();
         }
 
         public async Task Save(Item item)
@@ -28,7 +55,11 @@ namespace StorageApi.Infrastructure.Repository
     {
         Task Save(Item item);
 
-        Task<Item> GetById(int id);
+        Task<Item> GetById(string id);
+
+        Task<List<Item>> GetByNameOrDescription(string value);
+
+        Task<List<Item>> GetAll();
     }
 
 }

@@ -1,6 +1,4 @@
-using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
-using StorageApi.Infrastructure.Repository;
+using StorageApi.Infrastructure;
 
 namespace StorageApi;
 
@@ -15,7 +13,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        RegisterMongo(builder);
+        builder.ConfigureMongo();
 
         var app = builder.Build();
 
@@ -46,24 +44,4 @@ public class Program
 
         app.UseStaticFiles();
     }
-
-    private static void RegisterMongo(WebApplicationBuilder builder)
-    {
-        builder.Services.AddSingleton<IMongoClient>(sp =>
-        {
-            var connectionString = builder.Configuration.GetSection("MongoSettings").GetValue<string>("ConnectionString");
-            
-            return new MongoClient(connectionString);
-        });
-
-        builder.Services.AddSingleton<IMongoDatabase>(sp =>
-        {
-            var client = sp.GetRequiredService<IMongoClient>();
-            return client.GetDatabase("StorageApi");
-        });
-
-        // Register the repository
-        builder.Services.AddScoped<IItemRepository, ItemRepository>();
-    }
-
 }
