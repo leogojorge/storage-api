@@ -3,13 +3,13 @@ using StorageApi.Domain;
 using StorageApi.Infrastructure.Repository;
 using StorageApi.Infrastructure.Settings;
 
-namespace StorageApi.Infrastructure
+namespace StorageApi.Infrastructure.Configuration
 {
     public static class MongoConfigurator
     {
         public static void ConfigureMongo(this WebApplicationBuilder builder)
         {
-            builder.Services.AddSingleton<IMongoDatabase>(sp =>
+            builder.Services.AddSingleton(sp =>
             {
                 var client = sp.GetRequiredService<IMongoClient>();
 

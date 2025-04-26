@@ -1,4 +1,4 @@
-using StorageApi.Infrastructure;
+using StorageApi.Infrastructure.Configuration;
 
 namespace StorageApi;
 
