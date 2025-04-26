@@ -7,7 +7,7 @@ namespace StorageApi.Controllers;
 
 //[Authorize]
 //[ApiController]
-[Route("[controller]")]
+[Route("items")]
 public class ItemController : ControllerBase
 {
     private readonly IItemRepository ItemRepository;

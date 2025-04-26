@@ -46,7 +46,7 @@ form.addEventListener('submit', async (e) => {
 
     try {
 
-        const response = await fetch('https://localhost:7082/item', {
+        const response = await fetch('/items', {
             method: 'POST',
             body: formData
         });
