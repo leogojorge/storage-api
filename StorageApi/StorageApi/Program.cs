@@ -41,6 +41,10 @@ public class Program
         app.MapControllers();
 
         app.Run();
+
+        app.UseDefaultFiles();
+
+        app.UseStaticFiles();
     }
 
     private static void RegisterMongo(WebApplicationBuilder builder)
