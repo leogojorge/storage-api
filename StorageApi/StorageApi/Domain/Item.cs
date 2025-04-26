@@ -1,13 +1,14 @@
-﻿using System.Security.Cryptography;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace StorageApi.Domain
 {
     public class Item
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -27,7 +28,6 @@ namespace StorageApi.Domain
 
         public Item(string name, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
         {
-            Id = ObjectId.GenerateNewId();
             Name = name;
             Picture = picture;
             PartNumber = partNumber;

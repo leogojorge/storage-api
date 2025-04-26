@@ -22,17 +22,7 @@ namespace StorageApi.Infrastructure.Repository
 
         public async Task<Item> GetById(string id)
         {
-            ObjectId objectId;
-            try
-            {
-                objectId = new ObjectId(id);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
-            var result = await this._collection.FindAsync(item => item.Id == objectId);
+            var result = await this._collection.FindAsync(item => item.Id == id);
             return result.FirstOrDefault();
         }
 
@@ -47,7 +37,7 @@ namespace StorageApi.Infrastructure.Repository
 
             var paginatedResult = new PaginatedItemQueryResult(items, pageNumber, pageSize, itemCount);
 
-            return paginatedResult;
+            return paginatedResult;            
         }
 
         public async Task Save(Item item)
