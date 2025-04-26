@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace StorageApi.Controllers.Models
+﻿namespace StorageApi.Controllers.Models
 {
     public class AddItemRequest
     {

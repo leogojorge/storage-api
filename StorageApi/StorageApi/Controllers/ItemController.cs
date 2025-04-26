@@ -31,7 +31,7 @@ public class ItemController : ControllerBase
 
     [Route("filter")]
     [HttpGet(Name = "GetAllItems")]
-    public async Task<IActionResult> Get([FromQuery] GetItemFilterRequest request)
+    public async Task<IActionResult> Get([FromQuery] GetItemByFilterRequest request)
     {
         var items = await this.ItemRepository.GetByNameOrDescription(request.NameAndDescription);
         

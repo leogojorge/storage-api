@@ -1,6 +1,6 @@
 ﻿namespace StorageApi.Controllers.Models
 {
-    public class GetItemFilterRequest
+    public class GetItemByFilterRequest : PaginatedRequest
     {
         public string NameAndDescription { get; set; }
     }
