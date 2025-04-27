@@ -17,21 +17,22 @@ public class ItemController : ControllerBase
         ItemRepository = itemRepository;
     }
 
-    //[Authorize]
-    //[Route("/detail/{id}")]
-    //[HttpGet(Name = "GetItem")]
-    //public async Task<IActionResult> GetDetailed(string id)
-    //{
-    //    var item = await this.ItemRepository.GetById(id);
+    [Authorize]
+    [Route("{id}")]
+    [HttpGet(Name = "GetById")]
+    public async Task<IActionResult> Get([FromRoute] string id)
+    {
+        var item = await this.ItemRepository.GetById(id);
 
-    //    if (item is null)
-    //        return NotFound("Item not found.");
+        if(item == null)
+            return NotFound();
 
-    //    return Ok(item);
-    //}
+        return Ok(item);
+    }
 
     [Authorize]
-    [HttpGet(Name = "GetAllItems")]
+    [Route("filters")]
+    [HttpGet(Name = "GetFiltered")]
     public async Task<IActionResult> GetFiltered([FromQuery] GetItemByFilterRequest request)
     {
         var items = await this.ItemRepository.GetByFilters(request);
