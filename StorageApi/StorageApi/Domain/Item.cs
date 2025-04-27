@@ -26,6 +26,9 @@ namespace StorageApi.Domain
 
         public ushort Quantity { get; set; }
 
+        public DateOnly CreatedAt { get; set; }
+
+
         public Item(string name, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
         {
             Name = name;
@@ -36,6 +39,7 @@ namespace StorageApi.Domain
             Description = description;
             Supplier = supplier;
             Quantity = quantity;
+            CreatedAt = DateOnly.FromDateTime(DateTime.Now);
         }
     }
 }

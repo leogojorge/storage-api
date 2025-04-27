@@ -1,10 +1,11 @@
-﻿
-using StorageApi.Controllers.Models.Validators;
+﻿using StorageApi.Controllers.Models.Validators;
 
 namespace StorageApi.Controllers.Models.Request
 {
-    public class AddItemRequest
+    public class UpdateItemRequest
     {
+        public string Id { get; set; }
+
         public string Name { get; set; }
 
         public IFormFile Picture { get; set; }
@@ -25,5 +26,7 @@ namespace StorageApi.Controllers.Models.Request
         {
             return PictureValidator.Validate(this.Picture);
         }
+
+        
     }
 }

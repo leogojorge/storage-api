@@ -58,17 +58,34 @@ namespace StorageApi.Infrastructure.Repository
         {
             await this._collection.InsertOneAsync(item);
         }
+
+        public async Task<bool> Delete(string id)
+        {
+            var result = await this._collection.DeleteOneAsync(x => x.Id == id);
+            return result.IsAcknowledged;
+        }
+
+        public async Task Update(Item item)
+        {
+            var filter = new FilterDefinitionBuilder<Item>().Eq(x => x.Id, item.Id);
+
+            await this._collection.ReplaceOneAsync(filter, item);
+        }
     }
 
     public interface IItemRepository
     {
         Task Save(Item item);
+        
+        Task Update(Item item);
 
         Task<Item> GetById(string id);
 
         Task<PaginatedItemQueryResult> GetByFilters(GetItemByFilterRequest filters);
 
         Task<List<Item>> GetAll();
+
+        Task<bool> Delete(string id);
     }
 
     public record PaginatedItemQueryResult(List<Item> Items, int PageNumber, int PageSize, long ItemCount)
