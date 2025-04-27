@@ -19,6 +19,10 @@ img {
     margin: 25px;
 }
 
+.searchResult {
+    min-height: 300px; /* ou qualquer altura mínima */
+}
+
 .search input {
         padding: 10px;
         font-size: 17px;
