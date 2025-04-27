@@ -18,9 +18,9 @@ public class ItemController : ControllerBase
     }
 
     //[Authorize]
-    //[Route("{id}")]
+    //[Route("/detail/{id}")]
     //[HttpGet(Name = "GetItem")]
-    //public async Task<IActionResult> Get(string id)
+    //public async Task<IActionResult> GetDetailed(string id)
     //{
     //    var item = await this.ItemRepository.GetById(id);
 
@@ -32,12 +32,9 @@ public class ItemController : ControllerBase
 
     [Authorize]
     [HttpGet(Name = "GetAllItems")]
-    public async Task<IActionResult> Get([FromQuery] GetItemByFilterRequest request)
+    public async Task<IActionResult> GetFiltered([FromQuery] GetItemByFilterRequest request)
     {
-        var items = await this.ItemRepository.GetByNameOrDescription(
-            request.NameAndDescription,
-            request.PageNumber,
-            request.PageSize);
+        var items = await this.ItemRepository.GetByFilters(request);
 
         return Ok(items);
     }
