@@ -1,28 +1,16 @@
 body {
     font-family: Arial, sans-serif;
-    min-height: 100vh;
+    margin-top: 70px;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
-    font-style: normal;
+    font-style: normal; 
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 24px;
-}
 
 img {
     width: 100%;
     max-width: 100%;
     margin-bottom: 1rem;
-}
-
-label {
-    font-weight: bold;
-    color: #555;
-    display: block;
-    margin-bottom: 6px;
 }
 
 .search {
@@ -36,7 +24,7 @@ label {
         font-size: 17px;
         border: 1px solid #b7b7b7; 
         width: 25%;
-        background: #f1f1f1;
+        background: #f8f8f8;
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
 }
