@@ -35,6 +35,7 @@ namespace StorageApi.Infrastructure.Configuration
             });
 
             builder.Services.AddScoped<IItemRepository, ItemRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             
         }

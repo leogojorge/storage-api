@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StorageApi.Controllers.Models.Request;
 using StorageApi.Domain;
@@ -5,8 +6,8 @@ using StorageApi.Infrastructure.Repository;
 
 namespace StorageApi.Controllers;
 
-//[Authorize]
-//[ApiController]
+[Authorize]
+[ApiController]
 [Route("items")]
 public class ItemController : ControllerBase
 {
@@ -17,19 +18,20 @@ public class ItemController : ControllerBase
         ItemRepository = itemRepository;
     }
 
-    [Route("{id}")]
-    [HttpGet(Name = "GetItem")]
-    public async Task<IActionResult> Get(string id)
-    {
-        var item = await this.ItemRepository.GetById(id);
+    //[Authorize]
+    //[Route("{id}")]
+    //[HttpGet(Name = "GetItem")]
+    //public async Task<IActionResult> Get(string id)
+    //{
+    //    var item = await this.ItemRepository.GetById(id);
 
-        if (item is null)
-            return NotFound("Item not found.");
+    //    if (item is null)
+    //        return NotFound("Item not found.");
 
-        return Ok(item);
-    }
+    //    return Ok(item);
+    //}
 
-    [Route("filter")]
+    [Authorize]
     [HttpGet(Name = "GetAllItems")]
     public async Task<IActionResult> Get([FromQuery] GetItemByFilterRequest request)
     {
@@ -37,10 +39,12 @@ public class ItemController : ControllerBase
             request.NameAndDescription,
             request.PageNumber,
             request.PageSize);
-        
+
         return Ok(items);
     }
 
+    [Authorize]
+    [Route("items")]
     [HttpPost(Name = "AddItem")]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Post([FromForm] AddItemRequest request)

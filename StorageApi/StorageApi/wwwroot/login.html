@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f2f2f2;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <input id="username" type="text" placeholder="Usuário" required>
+        <input id="password" type="password" placeholder="Senha" required>
+        <button onclick="login()">Entrar</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+    async function login() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const messageDiv = document.getElementById('message');
+
+        if (!username || !password) {
+            messageDiv.textContent = 'Preencha usuário e senha.';
+            return;
+        }
+
+        try {
+            const response = await fetch('/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                messageDiv.style.color = 'green';
+                messageDiv.textContent = 'Login realizado com sucesso!';
+                // Aqui você poderia redirecionar ou carregar outra parte da aplicação
+            } else {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Usuário ou senha incorretos.';
+            }
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
+            messageDiv.style.color = 'red';
+            messageDiv.textContent = 'Erro na conexão.';
+        }
+    }
+    </script>
+
+</body>
+</html>
