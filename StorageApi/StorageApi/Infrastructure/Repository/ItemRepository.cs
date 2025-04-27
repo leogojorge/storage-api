@@ -32,24 +32,17 @@ namespace StorageApi.Infrastructure.Repository
             FilterDefinition<Item> filterDefinition = filterBuilder.Empty;
 
             if (!string.IsNullOrWhiteSpace(filters.NameAndDescription))
-            {
                 filterDefinition &= filterBuilder.Text(filters.NameAndDescription);
-            }
 
             if (!string.IsNullOrWhiteSpace(filters.PartNumber))
-            {
-                filterDefinition  &= filterBuilder.Eq(x => x.PartNumber, filters.PartNumber);
-            }
+                filterDefinition &= filterBuilder.Eq(x => x.PartNumber, filters.PartNumber);
 
             if (!string.IsNullOrWhiteSpace(filters.Place))
-            {
                 filterDefinition &= filterBuilder.Eq(x => x.Place, filters.Place); ;
-            }
 
             if (!string.IsNullOrWhiteSpace(filters.Supplier))
-            {
-                filterDefinition &= filterBuilder.Eq(x=> x.Supplier, filters.Supplier);
-            }
+                filterDefinition &= filterBuilder.Eq(x => x.Supplier, filters.Supplier);
+        
 
             long itemCount = this._collection.EstimatedDocumentCount();
 
@@ -58,7 +51,7 @@ namespace StorageApi.Infrastructure.Repository
 
             var paginatedResult = new PaginatedItemQueryResult(items, filters.PageNumber, filters.PageSize, itemCount);
 
-            return paginatedResult;            
+            return paginatedResult;
         }
 
         public async Task Save(Item item)
