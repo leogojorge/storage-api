@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f3f7;
+    min-height: 100vh;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 24px;
+}
+
+img {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.search {
+    display: flex;
+    justify-content: flex-end;
+    margin: 25px;
+}
+
+.search input {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid #b7b7b7; 
+        width: 25%;
+        background: #f1f1f1;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+}
+
+.search::after {
+        content: "";
+        clear: both;
+        display: table;
+}
+
+.btnSearch {
+        width: 50px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+}
+      
+    .btnSearch:hover {
+            background: #0b7dda;
+    }
+      
+/* Small devices such as large phones (768px and down) */
+@media only screen and (max-width: 768px) {
+    .searchResult {
+        display: grid;
+        align-items: center;
+        gap: 20px;      
+    }
+}
+
+/* Medium devices such as tablets (768px and up) */
+@media only screen and (min-width: 768px) {
+    .searchResult {
+        display: grid;
+        grid-template-areas: "a a a a a";
+        gap: 20px;
+        place-items: center; 
+    }
+}    
+
+
+.itemContent {
+    background-color: #fff;
+    margin: 15px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.infoItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btnEdit {
+    background-color: #3E77B6;
+    border: none;
+    width: 50px;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btnEdit:hover {
+    background-color: #AED3E3;
+}
+
+.btnDelete {
+    background-color: #FD582F;
+    border: none;
+    width: 50px;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btnDelete:hover {
+    background-color: #FF746C;
+}

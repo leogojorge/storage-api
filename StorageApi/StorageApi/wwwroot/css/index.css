@@ -1,11 +1,10 @@
 ﻿body {
     font-family: Arial, sans-serif;
     background-color: #f2f3f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
-    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 }
 
 .form-container {
@@ -17,24 +16,12 @@
     width: 90%;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 24px;
-}
 
-label {
-    font-weight: bold;
-    color: #555;
-    display: block;
-    margin-bottom: 6px;
-}
-
-input[type="text"],
+#itemForm input[type="text"],
 input[type="number"],
 textarea,
 input[type="file"] {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -52,7 +39,7 @@ video, canvas, img {
     display: none;
 }
 
-button {
+#itemForm button {
     width: 100%;
     padding: 12px;
     background-color: #4a90e2;
@@ -64,6 +51,7 @@ button {
     transition: background-color 0.3s ease;
 }
 
-    button:hover {
+    #itemForm button:hover {
         background-color: #357abd;
     }
+
