@@ -4,7 +4,8 @@
         "commandName": "Project",
         "launchBrowser": true,
         "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "MongoSettings__ConnectionString": "mongodb+srv://admin:GAJ4nqDmgUpaU@storageapi.fe8mgni.mongodb.net/?retryWrites=true&w=majority&appName=StorageApi"
         },
         "dotnetRunMessages": true,
         "applicationUrl": "https://localhost:7082;http://localhost:5077"
