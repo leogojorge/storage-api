@@ -7,7 +7,6 @@ using StorageApi.Infrastructure.Repository;
 namespace StorageApi.Controllers;
 
 [Authorize]
-[ApiController]
 [Route("items")]
 public class ItemController : ControllerBase
 {
@@ -44,7 +43,6 @@ public class ItemController : ControllerBase
     }
 
     [Authorize]
-    [Route("items")]
     [HttpPost(Name = "AddItem")]
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Post([FromForm] AddItemRequest request)

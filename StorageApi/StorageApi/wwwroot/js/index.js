@@ -48,7 +48,8 @@ form.addEventListener('submit', async (e) => {
 
         const response = await fetch('/items', {
             method: 'POST',
-            body: formData
+            body: formData,
+            credentials: 'include'
         });
 
         if (!response.ok) throw new Error('Erro ao cadastrar item');

@@ -48,7 +48,7 @@ namespace StorageApi.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            return Redirect("/index.html");
+            return Ok();
         }
 
         [HttpPost("logout")]
