@@ -13,17 +13,7 @@ namespace StorageApi.Infrastructure.Configuration
             {
                 var client = sp.GetRequiredService<IMongoClient>();
 
-                var database = client.GetDatabase("StorageApi");
-
-                var collection = database.GetCollection<Item>(nameof(Item));
-
-                var indexModel = new CreateIndexModel<Item>(Builders<Item>.IndexKeys
-                    .Text(m => m.Name)
-                    .Text(m => m.Description));
-
-                collection.Indexes.CreateOne(indexModel);
-
-                return database;
+                return client.GetDatabase("StorageApi");
             });
 
             builder.Services.AddSingleton<IMongoClient>(sp =>
@@ -34,11 +24,25 @@ namespace StorageApi.Infrastructure.Configuration
                 return new MongoClient(mongoSettings.ConnectionString);
             });
 
+            CreateIndexes(builder);
+
             builder.Services.AddScoped<IItemRepository, ItemRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-            
         }
-        
+
+        private static void CreateIndexes(WebApplicationBuilder builder)
+        {
+            var client = builder.Services.BuildServiceProvider().GetRequiredService<IMongoClient>();
+
+            var database = client.GetDatabase("StorageApi");
+
+            var collection = database.GetCollection<Item>(nameof(Item));
+
+            var indexModel = new CreateIndexModel<Item>(Builders<Item>.IndexKeys
+                .Text(m => m.Name)
+                .Text(m => m.Description));
+
+            collection.Indexes.CreateOne(indexModel);
+        }
     }
 }
