@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StorageApi.Controllers.Models.Request;
@@ -11,6 +12,8 @@ namespace StorageApi.Controllers;
 public class ItemController : ControllerBase
 {
     private readonly IItemRepository ItemRepository;
+
+    protected string CurrentUserId => User.FindFirstValue("UserId")!;
 
     public ItemController(IItemRepository itemRepository)
     {
@@ -62,20 +65,20 @@ public class ItemController : ControllerBase
             return Problem(ex.Message);
         }
 
-        return Ok("Item created successfully.");
+        return Ok(item);
     }
 
     [Authorize]
-    [HttpPut]
+    [HttpPut("{id}")]
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> Put([FromForm] UpdateItemRequest request)
+    public async Task<IActionResult> Put([FromRoute] string id, [FromForm] UpdateItemRequest request)
     {
         var validationErros = request.Validate();
 
         if (validationErros.Count > 0)
             return BadRequest(validationErros);
 
-        var item = await this.ItemRepository.GetById(request.Id);
+        var item = await this.ItemRepository.GetById(id);
 
         if (item is null)
             return NotFound();
@@ -93,7 +96,7 @@ public class ItemController : ControllerBase
             return Problem(ex.Message);
         }
 
-        return Ok("Item created successfully.");
+        return Ok("Item updated successfully.");
     }
 
     [Authorize]
