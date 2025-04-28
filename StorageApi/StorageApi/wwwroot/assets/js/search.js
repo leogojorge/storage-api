@@ -12,7 +12,10 @@ let currentSearch = "";
 console.log('entrou')
 async function fetchItems(nameAndDescription = "", page = 1) {
     try {
-        const response = await fetch(`/items?NameAndDescription=${encodeURIComponent(nameAndDescription)}&PageNumber=${page}&PageSize=${pageSize}`);
+        const response = await fetch(`/items?NameAndDescription=${encodeURIComponent(nameAndDescription)}&PageNumber=${page}&PageSize=${pageSize}`,
+        {
+            credentials: 'include'
+        });
         const data = await response.json();
         console.log('entrou');
         renderItems(data.items);

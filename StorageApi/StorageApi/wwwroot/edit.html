@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edição de Item</title>
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/header.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="headerContainer"></div>
+    <div class="form-container">
+        <h3>Item:</h3>
+        <form id="itemForm" enctype="multipart/form-data">
+            <input type="text" name="name" placeholder="Nome" required>
+            <input type="text" name="partNumber" placeholder="Part Number">
+            <input type="text" name="category" placeholder="Categoria">
+            <input type="text" name="place" placeholder="Local">
+            <textarea name="description" placeholder="Descrição"></textarea>
+            <input type="text" name="supplier" placeholder="Fornecedor">
+            <input type="number" name="quantity" placeholder="Quantidade" min="0">
+
+            <label>Imagem atual:</label>
+            <img id="preview" src="#" alt="Imagem atual" style="display:none; max-width:100%;">
+
+            <label>Alterar imagem:</label>
+            <input type="file" id="fileInput" accept="image/*">
+
+            <button type="button" id="startCamera">Ou usar a câmera</button>
+
+            <div id="cameraContainer">
+                <video id="video" autoplay playsinline></video>
+                <button type="button" id="takePhoto">Tirar Foto</button>
+                <canvas id="canvas" style="display: none;"></canvas>
+            </div>
+
+            <img id="preview" src="#" alt="Preview" style="display: none;">
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+    </div>
+
+    <script src="./assets/js/edit.js" type="text/javascript"></script>
+    <script src="./assets/js/globalComponents.js" type="text/javascript"></script>
+    <script src="./assets/js/imageHalper.js" type="text/javascript"></script>
+</body>
+</html>
