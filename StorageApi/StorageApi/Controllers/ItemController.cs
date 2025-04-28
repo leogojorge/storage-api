@@ -11,7 +11,7 @@ namespace StorageApi.Controllers;
 public class ItemController : ControllerBase
 {
     private readonly IItemRepository ItemRepository;
-    
+
     public ItemController(IItemRepository itemRepository)
     {
         ItemRepository = itemRepository;
@@ -76,6 +76,9 @@ public class ItemController : ControllerBase
             return BadRequest(validationErros);
 
         var item = await this.ItemRepository.GetById(request.Id);
+
+        if (item is null)
+            return NotFound();
 
         var pictureContent = await GetPictureAsByteArray(request.Picture);
 
