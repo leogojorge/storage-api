@@ -41,5 +41,17 @@ namespace StorageApi.Domain
             Quantity = quantity;
             CreatedAt = DateOnly.FromDateTime(DateTime.Now);
         }
+
+        public void Update(string name, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
+        {
+            Name = name;
+            Picture = picture;
+            PartNumber = partNumber;
+            Category = category;
+            Place = place;
+            Description = description;
+            Supplier = supplier;
+            Quantity = quantity;
+        }
     }
 }

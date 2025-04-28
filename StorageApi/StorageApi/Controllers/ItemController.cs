@@ -49,7 +49,7 @@ public class ItemController : ControllerBase
         if (validationErros.Count > 0)
             return BadRequest(validationErros);
 
-        var pictureContent = await this.GetPictureAsByteArray(request.Picture);
+        var pictureContent = await GetPictureAsByteArray(request.Picture);
 
         var item = new Item(request.Name, pictureContent, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
 
@@ -77,11 +77,13 @@ public class ItemController : ControllerBase
 
         var item = await this.ItemRepository.GetById(request.Id);
 
-        var pictureContent = await this.GetPictureAsByteArray(request.Picture);
-        //mapear update pro item
+        var pictureContent = await GetPictureAsByteArray(request.Picture);
+
+        item.Update(request.Name, pictureContent, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
+
         try
         {
-            await this.ItemRepository.Save(item);
+            await this.ItemRepository.Update(item);
         }
         catch (Exception ex)
         {
@@ -103,7 +105,7 @@ public class ItemController : ControllerBase
         return Ok("Item deleted successfully.");
     }
 
-    private async Task<byte[]> GetPictureAsByteArray(IFormFile picture)
+    private static async Task<byte[]> GetPictureAsByteArray(IFormFile picture)
     {
         using var ms = new MemoryStream();
         await picture.CopyToAsync(ms);
