@@ -100,32 +100,6 @@ public class ItemController : ControllerBase
     }
 
     [Authorize]
-    [HttpPut]
-    [Consumes("multipart/form-data")]
-    public async Task<IActionResult> Put([FromForm] UpdateItemRequest request)
-    {
-        var validationErros = request.Validate();
-
-        if (validationErros.Count > 0)
-            return BadRequest(validationErros);
-
-        var item = await this.ItemRepository.GetById(request.Id);
-
-        var pictureContent = await this.GetPictureAsByteArray(request.Picture);
-        //mapear update pro item
-        try
-        {
-            await this.ItemRepository.Save(item);
-        }
-        catch (Exception ex)
-        {
-            return Problem(ex.Message);
-        }
-
-        return Ok("Item created successfully.");
-    }
-
-    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] string id)
     {
