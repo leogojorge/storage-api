@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StorageApi.Controllers.Models.Request;
@@ -11,7 +12,9 @@ namespace StorageApi.Controllers;
 public class ItemController : ControllerBase
 {
     private readonly IItemRepository ItemRepository;
-    
+
+    protected string CurrentUserId => User.FindFirstValue("UserId")!;
+
     public ItemController(IItemRepository itemRepository)
     {
         ItemRepository = itemRepository;
@@ -49,7 +52,7 @@ public class ItemController : ControllerBase
         if (validationErros.Count > 0)
             return BadRequest(validationErros);
 
-        var pictureContent = await this.GetPictureAsByteArray(request.Picture);
+        var pictureContent = await GetPictureAsByteArray(request.Picture);
 
         var item = new Item(request.Name, pictureContent, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
 
@@ -62,7 +65,38 @@ public class ItemController : ControllerBase
             return Problem(ex.Message);
         }
 
-        return Ok("Item created successfully.");
+        return Ok(item);
+    }
+
+    [Authorize]
+    [HttpPut("{id}")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Put([FromRoute] string id, [FromForm] UpdateItemRequest request)
+    {
+        var validationErros = request.Validate();
+
+        if (validationErros.Count > 0)
+            return BadRequest(validationErros);
+
+        var item = await this.ItemRepository.GetById(id);
+
+        if (item is null)
+            return NotFound();
+
+        var pictureContent = await GetPictureAsByteArray(request.Picture);
+
+        item.Update(request.Name, pictureContent, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
+
+        try
+        {
+            await this.ItemRepository.Update(item);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+        }
+
+        return Ok("Item updated successfully.");
     }
 
     [Authorize]

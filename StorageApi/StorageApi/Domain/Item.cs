@@ -12,8 +12,6 @@ namespace StorageApi.Domain
 
         public string Name { get; set; }
 
-        public byte[] Picture { get; set; }
-
         public string PartNumber { get; set; }
         
         public string Category { get; set; }
@@ -25,9 +23,10 @@ namespace StorageApi.Domain
         public string Supplier  { get; set; }
 
         public ushort Quantity { get; set; }
-
+        
         public DateOnly CreatedAt { get; set; }
 
+        public byte[] Picture { get; set; }
 
         public Item(string name, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
         {
@@ -40,6 +39,18 @@ namespace StorageApi.Domain
             Supplier = supplier;
             Quantity = quantity;
             CreatedAt = DateOnly.FromDateTime(DateTime.Now);
+        }
+
+        public void Update(string name, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
+        {
+            Name = name;
+            Picture = picture;
+            PartNumber = partNumber;
+            Category = category;
+            Place = place;
+            Description = description;
+            Supplier = supplier;
+            Quantity = quantity;
         }
     }
 }
