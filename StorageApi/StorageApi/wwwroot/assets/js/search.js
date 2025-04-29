@@ -34,7 +34,7 @@ function renderItems(items) {
         itemDiv.className = 'itemContent';
 
         const img = document.createElement('img');
-        img.src = `data:image/png;base64,${item.picture || ''}`; // fallback para vazio
+        img.src = `data:image/png;base64,${item.picture || ''}`;
 
         const infoDiv = document.createElement('div');
         infoDiv.className = 'infoItem';
