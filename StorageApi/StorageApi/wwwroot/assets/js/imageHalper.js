@@ -11,7 +11,9 @@ const fieInput = document.getElementById('fileInput');
 
 startCameraBtn.addEventListener('click', async () => {
     try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode : 'environment'}
+        });
         video.srcObject = stream;
         cameraContainer.style.display = 'block';
     } catch (err) {
