@@ -56,7 +56,27 @@ video, canvas, img {
     transition: background-color 0.3s ease;
 }
 
-    #itemForm button:hover {
-        background-color: #357abd;
-    }
+#itemForm button:hover {
+    background-color: #357abd;
+}
+
+#errorContainer {
+    background-color: #ffe6e6;
+    border: 1px solid #ff4d4d;
+    color: #b30000;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 8px;
+    font-family: sans-serif;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+#errorContainer ul {
+    margin: 0;
+    padding-left: 1.2em;
+}
+
+#errorContainer li {
+    margin-bottom: 0.5em;
+    list-style-type: "⚠️ ";
+}
 

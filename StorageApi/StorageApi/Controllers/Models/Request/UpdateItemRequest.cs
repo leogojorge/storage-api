@@ -22,9 +22,12 @@ namespace StorageApi.Controllers.Models.Request
 
         public List<string> Validate()
         {
-            return PictureValidator.Validate(this.Picture);
-        }
+            var errors = PictureValidator.Validate(this.Picture);
 
-        
+            if (string.IsNullOrWhiteSpace(this.Name))
+                errors.Add("Nome é obrigatório");
+
+            return errors;
+        }
     }
 }

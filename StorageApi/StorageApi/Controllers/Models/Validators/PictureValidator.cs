@@ -12,8 +12,7 @@
 
             if (picture == null || picture.Length == 0)
             {
-                erros.Add("picture is empty");
-
+                erros.Add("Foto é obrigatória.");
                 return erros;
             }
 
@@ -22,11 +21,11 @@
 
             if (!AllowedFileExtensions.Contains(extension))
             {
-                erros.Add("Please Upload image of type .jpg, .gif or .png.");
+                erros.Add("Foto deve ser do tipo .jpg ou .png.");
             }
             else if (picture.Length > MaxContentLength)
             {
-                erros.Add("Please Upload a file up to 1 mb.");
+                erros.Add("Foto deve ter até 1 MB.");
             }
 
             return erros;

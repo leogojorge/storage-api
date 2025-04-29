@@ -8,7 +8,7 @@ form.addEventListener('submit', async (e) => {
         formData.append('picture', imageBlob, 'foto.jpg');
     }
     if (!imageBlob && fileInput.files.length > 0) {
-        formData.append('picture', fileInput.files[0]); // mesmo nome do backend
+        formData.append('picture', fileInput.files[0]); 
     }
 
     try {
@@ -19,11 +19,20 @@ form.addEventListener('submit', async (e) => {
             credentials: 'include'
         });
 
-        if (!response.ok) throw new Error('Erro ao cadastrar item');
+        if (!response.ok) {
+            if (response.status == 400) {
+                const errors = await response.json(); 
+                showErrors(errors); 
+                return;
+            }
+        }
 
         alert('Item cadastrado com sucesso!');
         form.reset();
+        clearErros();
+
         preview.style.display = 'none';
+
         if (stream) stream.getTracks().forEach(track => track.stop());
     } catch (err) {
         alert('Erro: ' + err.message);

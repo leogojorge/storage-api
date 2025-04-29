@@ -63,7 +63,13 @@ form.addEventListener('submit', async (e) => {
             credentials: 'include'
         });
 
-        if (!response.ok) throw new Error('Erro ao salvar alterações');
+        if (!response.ok) {
+            if (response.status == 400) {
+                const errors = await response.json();
+                showErrors(errors);
+                return;
+            }
+        }
 
         alert('Item atualizado com sucesso!');
         //window.location.href = 'busca.html'; // voltar para tela de busca
