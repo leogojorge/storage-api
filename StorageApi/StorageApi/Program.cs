@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Filters;
+using MongoDB.Driver;
+using StorageApi.Filters;
 using StorageApi.Infrastructure.Configuration;
 
 namespace StorageApi;
@@ -19,8 +22,13 @@ public class Program
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 options.SlidingExpiration = true;
             });
-
         builder.Services.AddAuthorization();
+
+        builder.Services.AddMvc(
+            config =>
+            {
+                config.Filters.Add(typeof(GenericExceptionFilter));
+            });
 
         builder.Services.AddControllers();
 
