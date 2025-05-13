@@ -1,11 +1,14 @@
 ﻿const form = document.getElementById('itemForm');
 
 const params = new URLSearchParams(window.location.search);
-const itemId = params.get('id');
+const itemId = params.get('itemId');
 
 if (!itemId) {
     alert('ID do item não fornecido.');
     window.location.href = 'search.html';
+}
+else {
+    loadItem();
 }
 
 async function loadItem() {
@@ -77,5 +80,3 @@ form.addEventListener('submit', async (e) => {
         alert('Erro: ' + err.message);
     }
 });
-
-loadItem();

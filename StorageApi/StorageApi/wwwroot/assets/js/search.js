@@ -33,6 +33,13 @@ function renderItems(items) {
     }
 
     items.forEach(item => {
+        //cria link para editar item. por em css?
+        const link = document.createElement('a');
+        link.href = `edit.html?itemId=${item.id}`;
+        link.className = 'itemLink';
+        link.style.textDecoration = 'none';
+        link.style.color = 'inherit';
+        //
         const itemDiv = document.createElement('div');
         itemDiv.className = 'itemContent';
 
@@ -52,7 +59,19 @@ function renderItems(items) {
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btnDelete';
         deleteBtn.innerHTML = `<i class="fa fa-trash"></i>`;
-        // você pode adicionar lógica para deletar aqui
+
+        // evita navegação para pagina de edição ao clicar no botão de deleção
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault(); 
+           
+            const confirmDelete = confirm(`Deseja realmente excluir o item "${item.name}"?`);
+            if (!confirmDelete) return;
+
+            deleteBtn.disabled = true;
+
+            deleteItem(item.id);
+        });
 
         infoDiv.appendChild(textDiv);
         infoDiv.appendChild(deleteBtn);
@@ -60,8 +79,29 @@ function renderItems(items) {
         itemDiv.appendChild(img);
         itemDiv.appendChild(infoDiv);
 
-        searchResult.appendChild(itemDiv);
+        link.appendChild(itemDiv);
+        searchResult.appendChild(link);
+
     });
+}
+
+async function deleteItem(itemId) {
+    try {
+        const response = await fetch(`/items/${itemId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao deletar item');
+        }
+
+        alert('Item deletado com sucesso!');
+        fetchItems(currentSearch, pageNumber);
+    } catch (error) {
+        console.error('Erro ao deletar item:', error);
+        alert('Erro ao deletar item. Tente novamente.');
+    }
 }
 
 function updatePagination(page) {

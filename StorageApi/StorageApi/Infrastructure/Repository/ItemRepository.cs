@@ -38,7 +38,7 @@ namespace StorageApi.Infrastructure.Repository
                 filterDefinition &= filterBuilder.Eq(x => x.PartNumber, filters.PartNumber);
 
             if (!string.IsNullOrWhiteSpace(filters.Place))
-                filterDefinition &= filterBuilder.Eq(x => x.Place, filters.Place); ;
+                filterDefinition &= filterBuilder.Eq(x => x.Place, filters.Place);
 
             if (!string.IsNullOrWhiteSpace(filters.Supplier))
                 filterDefinition &= filterBuilder.Eq(x => x.Supplier, filters.Supplier);
