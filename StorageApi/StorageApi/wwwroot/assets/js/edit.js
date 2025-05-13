@@ -13,7 +13,7 @@ else {
 
 async function loadItem() {
     try {
-        const response = await fetch(`https://localhost:7082/items/${itemId}`, {
+        const response = await fetch(`/items/${itemId}`, {
             credentials: 'include'
         });
 

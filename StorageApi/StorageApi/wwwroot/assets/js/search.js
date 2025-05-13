@@ -9,7 +9,6 @@ let pageNumber = 1;
 let pageSize = 100;
 let currentSearch = "";
 
-console.log('entrou')
 async function fetchItems(nameAndDescription = "", page = 1) {
     try {
         const response = await fetch(`/items?NameAndDescription=${encodeURIComponent(nameAndDescription)}&PageNumber=${page}&PageSize=${pageSize}`,
@@ -17,7 +16,6 @@ async function fetchItems(nameAndDescription = "", page = 1) {
             credentials: 'include'
         });
         const data = await response.json();
-        console.log('entrou');
         renderItems(data.items);
         updatePagination(data.pageNumber);
     } catch (error) {
