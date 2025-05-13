@@ -51,6 +51,8 @@ namespace StorageApi.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
+            throw new Exception("Exception no momento do logout");
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
         }
