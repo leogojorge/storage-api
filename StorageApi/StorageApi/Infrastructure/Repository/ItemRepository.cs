@@ -13,23 +13,25 @@ namespace StorageApi.Infrastructure.Repository
             this._collection = database.GetCollection<Item>(nameof(Item));
         }
 
-        public async Task<List<Item>> GetAll()
+        public async Task<List<Item>> GetAll(string userId)
         {
-            var result = await this._collection.FindAsync(_ => true);
+            var result = await this._collection.FindAsync(item => item.UserId == userId);
 
             return result.ToList();
         }
 
-        public async Task<Item> GetById(string id)
+        public async Task<Item> GetById(string id, string userId)
         {
-            var result = await this._collection.FindAsync(item => item.Id == id);
+            var result = await this._collection.FindAsync(item => item.Id == id && item.UserId == userId);
             return result.FirstOrDefault();
         }
 
-        public async Task<PaginatedItemQueryResult> GetByFilters(GetItemByFilterRequest filters)
+        public async Task<PaginatedItemQueryResult> GetByFilters(GetItemByFilterRequest filters, string userId)
         {
             var filterBuilder = new FilterDefinitionBuilder<Item>();
             FilterDefinition<Item> filterDefinition = filterBuilder.Empty;
+            
+            filterDefinition = filterBuilder.Eq(x => x.UserId, userId);
 
             if (!string.IsNullOrWhiteSpace(filters.NameAndDescription))
                 filterDefinition &= filterBuilder.Text(filters.NameAndDescription);
@@ -59,17 +61,19 @@ namespace StorageApi.Infrastructure.Repository
             await this._collection.InsertOneAsync(item);
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(string id, string userId)
         {
-            var result = await this._collection.DeleteOneAsync(x => x.Id == id);
+            var result = await this._collection.DeleteOneAsync(x => x.Id == id && x.UserId == userId);
             return result.IsAcknowledged;
         }
 
-        public async Task Update(Item item)
+        public async Task Update(Item item, string userId)
         {
-            var filter = new FilterDefinitionBuilder<Item>().Eq(x => x.Id, item.Id);
+            var filterBuilder = new FilterDefinitionBuilder<Item>();
+            FilterDefinition<Item> filterDefinition = filterBuilder.
+                Eq(x => x.Id, item.Id) & filterBuilder.Eq(x => x.Id, item.Id);
 
-            await this._collection.ReplaceOneAsync(filter, item);
+            await this._collection.ReplaceOneAsync(filterDefinition, item);
         }
     }
 
@@ -77,15 +81,15 @@ namespace StorageApi.Infrastructure.Repository
     {
         Task Save(Item item);
         
-        Task Update(Item item);
+        Task Update(Item item, string userId);
 
-        Task<Item> GetById(string id);
+        Task<Item> GetById(string id, string userId);
 
-        Task<PaginatedItemQueryResult> GetByFilters(GetItemByFilterRequest filters);
+        Task<PaginatedItemQueryResult> GetByFilters(GetItemByFilterRequest filters, string userId);
 
-        Task<List<Item>> GetAll();
+        Task<List<Item>> GetAll(string userId);
 
-        Task<bool> Delete(string id);
+        Task<bool> Delete(string id, string userId);
     }
 
     public record PaginatedItemQueryResult(List<Item> Items, int PageNumber, int PageSize, long ItemCount)

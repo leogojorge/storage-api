@@ -9,6 +9,9 @@ namespace StorageApi.Domain
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+        
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string UserId { get; set; }
 
         public string Name { get; set; }
 
@@ -28,9 +31,10 @@ namespace StorageApi.Domain
 
         public byte[] Picture { get; set; }
 
-        public Item(string name, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
+        public Item(string name, string userId, byte[] picture, string partNumber, string category, string place, string description, string supplier, ushort quantity)
         {
             Name = name;
+            UserId = userId;
             Picture = picture;
             PartNumber = partNumber;
             Category = category;

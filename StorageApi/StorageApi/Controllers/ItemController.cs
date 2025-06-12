@@ -24,7 +24,7 @@ public class ItemController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get([FromRoute] string id)
     {
-        var item = await this.ItemRepository.GetById(id);
+        var item = await this.ItemRepository.GetById(id, this.CurrentUserId);
 
         if (item == null)
             return NotFound();
@@ -37,7 +37,7 @@ public class ItemController : ControllerBase
     [HttpGet(Name = "GetFiltered")]
     public async Task<IActionResult> GetFiltered([FromQuery] GetItemByFilterRequest request)
     {
-        var items = await this.ItemRepository.GetByFilters(request);
+        var items = await this.ItemRepository.GetByFilters(request, this.CurrentUserId);
 
         return Ok(items);
     }
@@ -54,7 +54,7 @@ public class ItemController : ControllerBase
 
         var pictureContent = await GetPictureAsByteArray(request.Picture);
 
-        var item = new Item(request.Name, pictureContent, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
+        var item = new Item(request.Name, this.CurrentUserId, pictureContent, request.PartNumber, request.Category, request.Place, request.Description, request.Supplier, request.Quantity);
 
         try
         {
@@ -78,7 +78,7 @@ public class ItemController : ControllerBase
         if (validationErros.Count > 0)
             return BadRequest(validationErros);
 
-        var item = await this.ItemRepository.GetById(id);
+        var item = await this.ItemRepository.GetById(id, this.CurrentUserId);
 
         if (item is null)
             return NotFound();
@@ -89,7 +89,7 @@ public class ItemController : ControllerBase
 
         try
         {
-            await this.ItemRepository.Update(item);
+            await this.ItemRepository.Update(item, this.CurrentUserId);
         }
         catch (Exception ex)
         {
@@ -106,7 +106,7 @@ public class ItemController : ControllerBase
         if (string.IsNullOrWhiteSpace(id))
             return Ok();
 
-        await this.ItemRepository.Delete(id);
+        await this.ItemRepository.Delete(id, this.CurrentUserId);
 
         return Ok("Item deleted successfully.");
     }
