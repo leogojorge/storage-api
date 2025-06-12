@@ -38,11 +38,16 @@ namespace StorageApi.Infrastructure.Configuration
 
             var collection = database.GetCollection<Item>(nameof(Item));
 
-            var indexModel = new CreateIndexModel<Item>(Builders<Item>.IndexKeys
+            var textIndexForNameAndDescription = new CreateIndexModel<Item>(Builders<Item>.IndexKeys
                 .Text(m => m.Name)
                 .Text(m => m.Description));
 
-            collection.Indexes.CreateOne(indexModel);
+            var indexForItemIdAndUserId = new CreateIndexModel<Item>(Builders<Item>.IndexKeys
+                .Ascending(m => m.Id)
+                .Ascending(m => m.UserId));
+
+            collection.Indexes.CreateOne(textIndexForNameAndDescription);
+            collection.Indexes.CreateOne(indexForItemIdAndUserId);
         }
     }
 }

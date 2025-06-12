@@ -37,9 +37,9 @@ public class ItemController : ControllerBase
     [HttpGet(Name = "GetFiltered")]
     public async Task<IActionResult> GetFiltered([FromQuery] GetItemByFilterRequest request)
     {
-        var items = await this.ItemRepository.GetByFilters(request, this.CurrentUserId);
+        var result = await this.ItemRepository.GetByFilters(request, this.CurrentUserId);
 
-        return Ok(items);
+        return Ok(result);
     }
 
     [Authorize]

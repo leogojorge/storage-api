@@ -70,8 +70,9 @@ namespace StorageApi.Infrastructure.Repository
         public async Task Update(Item item, string userId)
         {
             var filterBuilder = new FilterDefinitionBuilder<Item>();
-            FilterDefinition<Item> filterDefinition = filterBuilder.
-                Eq(x => x.Id, item.Id) & filterBuilder.Eq(x => x.Id, item.Id);
+            FilterDefinition<Item> filterDefinition =
+                filterBuilder.Eq(x => x.Id, item.Id) & 
+                filterBuilder.Eq(x => x.UserId, userId);
 
             await this._collection.ReplaceOneAsync(filterDefinition, item);
         }
