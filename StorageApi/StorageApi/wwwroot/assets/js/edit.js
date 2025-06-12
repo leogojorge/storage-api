@@ -31,9 +31,11 @@ async function loadItem() {
 
         if (item.picture) {
             const img = document.getElementById('preview');
-            img.src = `data:image/png;base64,${item.picture || ''}`; // fallback para vazio
-
+            img.src = `data:image/png;base64,${item.picture}`;
             preview.style.display = 'block';
+
+            const blob = await base64ToBlob(item.picture, 'image/png');
+            imageBlob = new File([blob], 'imagem-atual.png', { type: 'image/png' });
         }
     } catch (err) {
         alert('Erro: ' + err.message);
@@ -55,8 +57,8 @@ form.addEventListener('submit', async (e) => {
     if (imageBlob) {
         formData.append('picture', imageBlob, 'foto.jpg');
     }
-    if (!imageBlob && fileInput.files.length > 0) {
-        formData.append('picture', fileInput.files[0]); // mesmo nome do backend
+    else if (!imageBlob && fileInput.files.length > 0) {
+        formData.append('picture', fileInput.files[0]);
     }
 
     try {
