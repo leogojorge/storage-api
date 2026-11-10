@@ -14,15 +14,19 @@ namespace StorageApi.Controllers
     {
 
         private readonly IUserRepository UserRepository;
+        private readonly ILogger<AuthController> Logger;
 
-        public AuthController(IUserRepository userRepository)
+        public AuthController(IUserRepository userRepository, ILogger<AuthController> logger)
         {
             this.UserRepository = userRepository;
+            this.Logger = logger;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
+            this.Logger.LogInformation($"[Auth] User {loginRequest.Username} tring to loging in");
+
             var user = await this.UserRepository.Get(loginRequest.Username);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))

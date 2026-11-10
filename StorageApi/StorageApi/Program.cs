@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc.Filters;
 using MongoDB.Driver;
+using Serilog;
 using StorageApi.Filters;
 using StorageApi.Infrastructure.Configuration;
 
@@ -11,7 +11,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
@@ -35,7 +35,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddSwaggerGen(c => {
+        builder.Services.AddSwaggerGen(c =>
+        {
             c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             c.IgnoreObsoleteActions();
             c.IgnoreObsoleteProperties();
@@ -44,7 +45,13 @@ public class Program
 
         builder.ConfigureMongo();
 
+        builder.Host.UseSerilog((context, configuration) =>
+          configuration.ReadFrom.Configuration(context.Configuration)
+            .WriteTo.Console());
+
         var app = builder.Build();
+
+        app.UseSerilogRequestLogging();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
