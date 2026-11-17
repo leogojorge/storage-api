@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MongoDB.Driver;
 using Serilog;
+using Serilog.Formatting.Json;
 using StorageApi.Filters;
 using StorageApi.Infrastructure.Configuration;
 
@@ -46,9 +47,8 @@ public class Program
         builder.ConfigureMongo();
 
         builder.Host.UseSerilog((context, configuration) =>
-          configuration.ReadFrom.Configuration(context.Configuration)
-            .WriteTo.Console());
-
+            configuration.ReadFrom.Configuration(context.Configuration)
+            .WriteTo.Console(new JsonFormatter()));
         var app = builder.Build();
 
         app.UseSerilogRequestLogging();
