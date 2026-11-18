@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MongoDB.Driver;
+using OpenTelemetry.Metrics;
 using Serilog;
 using Serilog.Formatting.Json;
 using StorageApi.Filters;
@@ -44,6 +45,15 @@ public class Program
             c.CustomSchemaIds(type => type.FullName);
         });
 
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(metrics =>
+            {
+                metrics
+                .AddAspNetCoreInstrumentation() //metricas http
+                .AddRuntimeInstrumentation()//gc, mem, thread pool
+                .AddPrometheusExporter();
+            });
+
         builder.ConfigureMongo();
 
         builder.Host.UseSerilog((context, configuration) =>
@@ -67,6 +77,8 @@ public class Program
             context.Response.ContentType = "text/html";
             await context.Response.SendFileAsync("wwwroot/login.html");
         });
+
+        app.MapPrometheusScrapingEndpoint();
 
         app.UseHttpsRedirection();
 
